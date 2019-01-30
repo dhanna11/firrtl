@@ -9,18 +9,27 @@ antlr4(
     package = "firrtl.antlr",
     no_listener = False,
     visitor = True,
+    deps = ["//src/main/java:LexerHelper",
+    	    "@antlr4_tool//jar",
+	    "@antlr4_runtime//jar",
+	    "@antlr3_runtime//jar",
+	    "@stringtemplate4//jar",
+	    "@javax_json//jar",
+	    ],
 )
 
 java_library(
     name = "firrtlparserlib",
     srcs = [":generated"],
-    deps = ["@antlr4_runtime//jar"],
+    deps = ["@antlr4_runtime//jar",
+    "//src/main/java:LexerHelper"],
 )
 
 scala_library(
     name = "firrtllib",
     srcs = glob(["src/main/scala/**/*.scala"]),
     deps = [
+    "//3rdparty/jvm/net/jcazevedo:moultingyaml",
     ":firrtlparserlib",
     "//3rdparty/jvm/org/slf4j:slf4j_api",
     "//3rdparty/jvm/com/typesafe/scala_logging:scala_logging",
@@ -29,7 +38,8 @@ scala_library(
     "//3rdparty/jvm/org/scalacheck",
     "@antlr4_runtime//jar",
     ],
-    scalac_jvm_flags = ["-Xss2M",]
+    scalac_jvm_flags = ["-Xss2M",],
+    scalacopts = ["-Ylog-classpath"],
 
 )
 

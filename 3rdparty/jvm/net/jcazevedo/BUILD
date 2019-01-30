@@ -1,13 +1,15 @@
 load("@io_bazel_rules_scala//scala:scala_import.bzl", "scala_import")
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library")
 scala_import(
-    name = "scalacheck",
+    name = "moultingyaml",
     exports = [
+        "//3rdparty/jvm/com/github/nscala_time:nscala_time",
         "//3rdparty/jvm/org/scala_lang:scala_library",
-        "//3rdparty/jvm/org/scala_sbt:test_interface"
+        "//3rdparty/jvm/org/scala_lang:scala_reflect",
+        "//3rdparty/jvm/org/yaml:snakeyaml"
     ],
     jars = [
-        "//external:jar/org/scalacheck/scalacheck_2_11"
+        "//external:jar/net/jcazevedo/moultingyaml_2_11"
     ],
     visibility = [
         "//visibility:public"

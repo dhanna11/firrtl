@@ -8,7 +8,7 @@ options:
       type: "default"
       url: https://repo.maven.apache.org/maven2/
   strictVisibility: true
-  transitivity: runtime_deps
+  transitivity: exports
   versionConflictPolicy: highest
 
 dependencies:
@@ -46,6 +46,10 @@ dependencies:
       lang: java
       version: "1.7.25"
 
+  net.jcazevedo:
+    moultingyaml:
+      lang: scala
+      version: "0.2"
       
 replacements:
   org.scala-lang:

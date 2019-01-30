@@ -3,10 +3,8 @@ load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library")
 java_library(
     name = "logback_classic",
     exports = [
-        "//external:jar/ch/qos/logback/logback_classic"
-    ],
-    runtime_deps = [
         "//3rdparty/jvm/org/slf4j:slf4j_api",
+        "//external:jar/ch/qos/logback/logback_classic",
         ":logback_core"
     ],
     visibility = [

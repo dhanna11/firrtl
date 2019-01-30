@@ -9,13 +9,11 @@ import firrtl.LexerHelper;
 }
 
 @lexer::members {
-  private final LexerHelper denter = new firrtl.LexerHelper()
-  {
-    @Override
-    public Token pullToken() {
-      return FIRRTLLexer.super.nextToken();
-    }
-  };
+  private final LexerHelper denter = LexerHelper.builder()
+     .nl(NEWLINE)
+     .indent(FIRRTLParser.INDENT)
+     .dedent(FIRRTLParser.DEDENT)
+     .pullToken(FIRRTLLexer.super::nextToken);
 
   @Override
   public Token nextToken() {
