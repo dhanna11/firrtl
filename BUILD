@@ -1,10 +1,10 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@rules_antlr//antlr:antlr4.bzl", "antlr4")
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary", "scala_library", "scala_macro_library", "scala_test")
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary", "scala_library")
 
 antlr4(
-    name = "generated",
+    name = "firrtl_antr4_srcs",
     srcs = ["src/main/antlr4/FIRRTL.g4"],
     no_listener = False,
     package = "firrtl.antlr",
@@ -20,8 +20,8 @@ antlr4(
 )
 
 java_library(
-    name = "firrtlparserlib",
-    srcs = [":generated"],
+    name = "firrtl_antlr4_java_lib",
+    srcs = [":firrtl_antr4_srcs"],
     deps = [
         "//src/main/java:LexerHelper",
         "@antlr4_runtime//jar",
@@ -29,12 +29,12 @@ java_library(
 )
 
 scala_library(
-    name = "firrtllib",
+    name = "firrtl_lib",
     srcs = glob(["src/main/scala/**/*.scala"]),
     scalac_jvm_flags = ["-Xss2M"],
     deps = [
+        ":firrtl_antlr4_java_lib",
         ":firrtl_java_proto",
-        ":firrtlparserlib",
         "//3rdparty/jvm/ch/qos/logback:logback_classic",
         "//3rdparty/jvm/com/github/scopt",
         "//3rdparty/jvm/com/typesafe/scala_logging",
@@ -51,7 +51,7 @@ scala_binary(
     name = "firrtl_bin",
     data = ["src/main/resources/logback.xml"],
     main_class = "firrtl.Driver",
-    deps = [":firrtllib"],
+    deps = [":firrtl_lib"],
 )
 
 proto_library(

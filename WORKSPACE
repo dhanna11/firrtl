@@ -27,12 +27,6 @@ load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
 
 scala_register_toolchains()
 
-http_archive(
-    name = "bazel-deps",
-    strip_prefix = "bazel_deps-3fdaaa6de3ed8cf010a6b1713a04d55c4abb2592",
-    urls = ["https://github.com/johnynek/bazel-deps/archive/3fdaaa6de3ed8cf010a6b1713a04d55c4abb2592.zip"],
-)
-
 load("//3rdparty:workspace.bzl", "maven_dependencies")
 
 maven_dependencies()
