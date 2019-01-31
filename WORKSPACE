@@ -7,29 +7,39 @@ http_archive(
 )
 
 load("@rules_antlr//antlr:deps.bzl", "antlr_dependencies")
+
 antlr_dependencies(4)
 
-rules_scala_version="a89d44f7ef67d93dedfc9888630f48d7723516f7" # update this as needed
+rules_scala_version = "a89d44f7ef67d93dedfc9888630f48d7723516f7"  # update this as needed
 
 http_archive(
-             name = "io_bazel_rules_scala",
-             url = "https://github.com/bazelbuild/rules_scala/archive/%s.zip"%rules_scala_version,
-             type = "zip",
-             strip_prefix= "rules_scala-%s" % rules_scala_version
-             )
+    name = "io_bazel_rules_scala",
+    strip_prefix = "rules_scala-%s" % rules_scala_version,
+    type = "zip",
+    url = "https://github.com/bazelbuild/rules_scala/archive/%s.zip" % rules_scala_version,
+)
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
+
 scala_repositories()
 
 load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
+
 scala_register_toolchains()
 
 http_archive(
     name = "bazel-deps",
     strip_prefix = "bazel_deps-3fdaaa6de3ed8cf010a6b1713a04d55c4abb2592",
-    urls = ["https://github.com/johnynek/bazel-deps/archive/3fdaaa6de3ed8cf010a6b1713a04d55c4abb2592.zip"],    
+    urls = ["https://github.com/johnynek/bazel-deps/archive/3fdaaa6de3ed8cf010a6b1713a04d55c4abb2592.zip"],
 )
 
 load("//3rdparty:workspace.bzl", "maven_dependencies")
 
 maven_dependencies()
+
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "cef7f1b5a7c5fba672bec2a319246e8feba471f04dcebfe362d55930ee7c1c30",
+    strip_prefix = "protobuf-3.5.0",
+    urls = ["https://github.com/google/protobuf/archive/v3.5.0.zip"],
+)
