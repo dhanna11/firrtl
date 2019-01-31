@@ -7,7 +7,7 @@ scala_import(
         "//3rdparty/jvm/org/scala_sbt:test_interface"
     ],
     jars = [
-        "//external:jar/org/scalacheck/scalacheck_2_11"
+        "//external:jar/org/scalacheck/scalacheck_2_12"
     ],
     visibility = [
         "//visibility:public"

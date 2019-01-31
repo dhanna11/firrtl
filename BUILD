@@ -1,51 +1,65 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@rules_antlr//antlr:antlr4.bzl", "antlr4")
-load("@io_bazel_rules_scala//scala:scala.bzl", "scala_library", "scala_binary", "scala_macro_library", "scala_test")
+load("@io_bazel_rules_scala//scala:scala.bzl", "scala_binary", "scala_library", "scala_macro_library", "scala_test")
 
 antlr4(
     name = "generated",
     srcs = ["src/main/antlr4/FIRRTL.g4"],
-    package = "firrtl.antlr",
     no_listener = False,
+    package = "firrtl.antlr",
     visitor = True,
-    deps = ["//src/main/java:LexerHelper",
-    	    "@antlr4_tool//jar",
-	    "@antlr4_runtime//jar",
-	    "@antlr3_runtime//jar",
-	    "@stringtemplate4//jar",
-	    "@javax_json//jar",
-	    ],
+    deps = [
+        "//src/main/java:LexerHelper",
+        "@antlr3_runtime//jar",
+        "@antlr4_runtime//jar",
+        "@antlr4_tool//jar",
+        "@javax_json//jar",
+        "@stringtemplate4//jar",
+    ],
 )
 
 java_library(
     name = "firrtlparserlib",
     srcs = [":generated"],
-    deps = ["@antlr4_runtime//jar",
-    "//src/main/java:LexerHelper"],
+    deps = [
+        "//src/main/java:LexerHelper",
+        "@antlr4_runtime//jar",
+    ],
 )
 
 scala_library(
     name = "firrtllib",
     srcs = glob(["src/main/scala/**/*.scala"]),
+    scalac_jvm_flags = ["-Xss2M"],
     deps = [
-    "//3rdparty/jvm/net/jcazevedo:moultingyaml",
-    ":firrtlparserlib",
-    "//3rdparty/jvm/org/slf4j:slf4j_api",
-    "//3rdparty/jvm/com/typesafe/scala_logging:scala_logging",
-    "//3rdparty/jvm/ch/qos/logback:logback_classic",
-    "//3rdparty/jvm/org/scalatest",
-    "//3rdparty/jvm/org/scalacheck",
-    "@antlr4_runtime//jar",
+        ":firrtl_java_proto",
+        ":firrtlparserlib",
+        "//3rdparty/jvm/ch/qos/logback:logback_classic",
+        "//3rdparty/jvm/com/github/scopt",
+        "//3rdparty/jvm/com/typesafe/scala_logging",
+        "//3rdparty/jvm/net/jcazevedo:moultingyaml",
+        "//3rdparty/jvm/org/json4s:json4s_native",
+        "//3rdparty/jvm/org/scalacheck",
+        "//3rdparty/jvm/org/scalatest",
+        "@antlr4_runtime//jar",
+        "@com_google_protobuf//:protobuf_java",
     ],
-    scalac_jvm_flags = ["-Xss2M",],
-    scalacopts = ["-Ylog-classpath"],
-
 )
 
 scala_binary(
     name = "firrtl_bin",
-    deps = [":firrtllib",],
-    main_class = "firrtl.Driver",
     data = ["src/main/resources/logback.xml"],
+    main_class = "firrtl.Driver",
+    deps = [":firrtllib"],
+)
+
+proto_library(
+    name = "firrtl_proto",
+    srcs = ["src/main/proto/firrtl.proto"],
+)
+
+java_proto_library(
+    name = "firrtl_java_proto",
+    deps = [":firrtl_proto"],
 )

@@ -9,7 +9,7 @@ scala_import(
         "//3rdparty/jvm/org/yaml:snakeyaml"
     ],
     jars = [
-        "//external:jar/net/jcazevedo/moultingyaml_2_11"
+        "//external:jar/net/jcazevedo/moultingyaml_2_12"
     ],
     visibility = [
         "//visibility:public"
